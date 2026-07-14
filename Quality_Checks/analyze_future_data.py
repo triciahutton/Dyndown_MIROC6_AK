@@ -1,3 +1,4 @@
+#CREATED BY ELIZABETH FISCHER FOUND (https://github.com/AlaskaLargeScaleSnowAvalanche/akramms/blob/main/sh/)
 import datetime,pickle,pandas,pathlib,re,os
 import netCDF4
 import pandas as pd

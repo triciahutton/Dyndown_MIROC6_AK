@@ -1,4 +1,5 @@
 #CREATED BY ELIZABETH FISCHER FOUND (https://github.com/AlaskaLargeScaleSnowAvalanche/akramms/blob/main/sh/check_future_data.py)
+# contact her through eafischer2@alaska.edu
 
 import datetime,pickle,pandas,pathlib,re,os
 import netCDF4

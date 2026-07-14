@@ -1,13 +1,10 @@
 # Dyndown
 UAF Masters Research, Dynamically Downscaling CMIP6 Models
+Scripts were run on NCARs HPC- Derecho (if needed on chinook adjustments must be made) 
 
-Found within run-wrf: 
-
-
-
-Found within post-processing:
-post_proc-tpl folder consists of scripts needed to extract from the WRF output. This production is done using remove_var_startup_mpi.sh year
-
+Found within post-processing folder:
+**remove_var_startup_mpi.sh [year]** when this script is run, the folder post_proc-tpl folder is produced. Example remove_var_startup_mpi.sh 2005 creates the folder post_proc-2004 
+**post_proc-tpl** folder consists of scripts needed to extract from the WRF output. Inlcuding scripts **check_files.py**, **crontab -e**, **extract_vars.py**, **extract_vars_pool_tricia.py**, **missing_days_run_ext.sh**, **run_check_files.sh** ,**run_extvar.sh**, and **update_and_run.sh**
 
 **extract_vars_pool_tricia.py**-- Post processing script used to extract variables from the wrf out files 
 
@@ -23,4 +20,6 @@ post_proc-tpl folder consists of scripts needed to extract from the WRF output. 
 
 extract_vars.py-- original code from Chris, later adjusted and adapted to fit for CMIP6
 
+Folder within Post processing folder: **remove_var_mpi**
+this folder consists of 3 scripts, one for each domain (12km, 4km, and 1.33km) which extracted the final variables which were not properly completed in the orignal extract_vars_pool_trici.py script. (ex. removing the seaice from 1.33km domain) **remove_var_12_mpi.py** ,  **remove_var_133_mpi.py** , **remove_var_4_mpi.py** and **run_remove_var_12_mpy.py**
 

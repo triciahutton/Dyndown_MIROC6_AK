@@ -1,4 +1,6 @@
 #CREATED BY ELIZABETH FISCHER (https://github.com/AlaskaLargeScaleSnowAvalanche/akramms/blob/main/akramms)
+# contact her through eafischer2@alaska.edu
+
 import datetime,os,sys,typing,pathlib
 import numpy as np
 import pandas as pd

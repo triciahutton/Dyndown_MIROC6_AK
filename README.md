@@ -1,6 +1,7 @@
 # Dyndown
 UAF Masters Research, Dynamically Downscaling CMIP6 Models
 Scripts were run on NCARs HPC- Derecho (if needed on chinook adjustments must be made) 
+phutton5@alaska.edu for Alaska CASC (Climate Adaptation Science Center) 
 
 Found within post-processing folder:
 -
@@ -24,4 +25,8 @@ extract_vars.py- original code from Chris, later adjusted and adapted to fit for
 Folder within Post processing folder: **remove_var_mpi**
 
 this folder consists of 3 scripts, one for each domain (12km, 4km, and 1.33km) which extracted the final variables which were not properly completed in the orignal extract_vars_pool_trici.py script. (ex. removing the seaice from 1.33km domain) **remove_var_12_mpi.py** ,  **remove_var_133_mpi.py** , **remove_var_4_mpi.py** and **run_remove_var_12_mpy.py**
+
+Found in Main Folder:
+-
+**dscale_startup.sh** - Copies Peters files from Derecho and produces WRF directories for spin ups, including WPS folders and run WRF folders 
 

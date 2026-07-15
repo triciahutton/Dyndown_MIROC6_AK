@@ -20,7 +20,7 @@ Found within post-processing folder:
 **check_files.py** - reads each file and counts how many are available to post process from the wrf out file, count how many have already been post processed, and finds the last date in the post processed folder, and checks to make sure all the files are consecutive! (first check by Tricia)
 **run_check_files.sh** - runs the python script of check files 
 
-extract_vars.py- original code from Chris, later adjusted and adapted to fit for CMIP6, orginally for ERA5 dyndown (https://github.com/chryss/dyndowntools/tree/main)
+**extract_vars.py**- original code from Chris, later adjusted and adapted to fit for CMIP6, orginally for ERA5 dyndown (https://github.com/chryss/dyndowntools/tree/main)
 
 Folder within Post processing folder: **remove_var_mpi**
 

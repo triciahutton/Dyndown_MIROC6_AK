@@ -29,4 +29,4 @@ this folder consists of 3 scripts, one for each domain (12km, 4km, and 1.33km) w
 Found in Main Folder:
 -
 **dscale_startup.sh** - Copies Peters files from Derecho and produces WRF directories for spin ups, including WPS folders and run WRF folders 
-
+**namelist.wrf.dscale** - Namelist for WRF MIROC6

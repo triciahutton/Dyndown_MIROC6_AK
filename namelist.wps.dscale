@@ -1,4 +1,7 @@
- &time_control
+#REMOVE THESE COMMENTS BEFORE USING... 
+#RAADT may need to be 12,4,1?
+
+&time_control
  run_days                            = 0,
  run_hours                           = 168,
  run_minutes                         = 0,

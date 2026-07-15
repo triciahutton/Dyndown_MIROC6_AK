@@ -1,0 +1,37 @@
+#DO NOT INCLUDE THIS LINE .... FROM PETER CESM... DELETED MIROC6...
+&share
+ wrf_core = 'ARW',
+ max_dom = 3,
+ start_date = 'YEAR1-MONTH1-DAY1_00:00:00','YEAR1-MONTH1-DAY1_00:00:00','YEAR1-MONTH1-DAY1_00:00:00'
+ end_date   = 'YEAR2-MONTH2-DAY2_18:00:00','YEAR2-MONTH2-DAY2_18:00:00','YEAR2-MONTH2-DAY2_18:00:00'
+interval_seconds = 21600
+/
+
+&geogrid
+ parent_id         =   1,   1,   2,
+ parent_grid_ratio =   1,   3,   3,
+ i_parent_start    =   1,  84,  257,
+ j_parent_start    =   1,  82,  100,
+ e_we              =  355, 655, 346,
+ e_sn              =  305, 490, 277,
+ geog_data_res = 'default','default','default'
+ dx = 12000,
+ dy = 12000,
+ map_proj = 'polar'
+ ref_lon = -151.0
+ ref_lat = 63.0
+ truelat1  =  63.0,
+ stand_lon = -151.0,
+ geog_data_path = '/glade/u/home/wrfhelp/WPS_GEOG'
+/
+
+&ungrib
+ out_format = 'WPS',
+ prefix = 'FILE',
+/
+
+&metgrid
+ fg_name = 'FILE'
+ constants_name = 'TAVGSFC'
+/
+~       

@@ -1,0 +1,136 @@
+#!/bin/sh -x
+#PBS -A WYOM0200
+#PBS -N s_2063
+#PBS -l walltime=12:00:00
+#PBS -q main
+#PBS -j oe                    
+#PBS -l select=2:ncpus=128:mpiprocs=128  
+
+module --force purge
+module load ncarenv/23.09
+module load intel-classic/2023.2.1
+module load ncarcompilers/1.0.0
+module load cray-mpich/8.1.27
+module load craype/2.7.31
+module load netcdf-mpi/4.9.2
+module load ncl
+
+wps_dir="/glade/derecho/scratch/phutton/CMIP6/cmip6_run_v1/wps/wps-s2063"
+
+#"/glade/derecho/scratch/pbieniek/dscale/miroc6/wps/wps-s2063"
+wrf_dir="/glade/derecho/scratch/phutton/CMIP6/cmip6_run_v1/wrf/run-s2063"
+#"/glade/derecho/scratch/pbieniek/dscale/miroc6/wrf/run-s2063"
+gcm_dir="/glade/derecho/scratch/pbieniek/dscale/miroc6/pproc/binary_files"
+out_dir="/glade/campaign/uwyo/wyom0200/alaska/miroc6/ssp370/out-s2063"
+
+start_year=2065
+start_month=11
+start_day=08
+start_hour=00
+
+end_year=2068
+end_month=07
+end_day=31
+end_hour=00
+
+s_year=$start_year
+s_month=$start_month
+s_day=$start_day
+s_hour=$start_hour
+
+YEAR=$s_year
+MONTH=$s_month
+DAY=$s_day
+HOUR=$s_hour
+begtime=`date +%s`
+
+YEAR1=` date -ud " 7 day 00:00:00 $MONTH/$DAY/$YEAR" +%Y`
+MONTH1=`date -ud " 7 day 00:00:00 $MONTH/$DAY/$YEAR" +%m`
+DAY1=`  date -ud " 7 day 00:00:00 $MONTH/$DAY/$YEAR" +%d`
+eflag=0
+
+if [[ `date -ud "00:00:00 $MONTH1/$DAY1/$YEAR1" +%s` -gt `date -ud "$end_hour:00:00 $end_month/$end_day/$end_year" +%s` ]]
+then
+#MONTH1=07
+#DAY1=31
+eflag=1
+fi
+
+echo "start WPS procs: `date`"
+
+cd $wps_dir
+
+sed -e "s/YEAR1/$YEAR/g" -e "s/MONTH1/$MONTH/g" -e "s/DAY1/$DAY/g" \
+    -e "s/YEAR2/$YEAR1/g" -e "s/MONTH2/$MONTH1/g" -e "s/DAY2/$DAY1/g" \
+    ./namelist.wps.dscale > namelist.wps
+
+ln -sf ${gcm_dir}/${YEAR}/FILE:${YEAR}-${MONTH}-* .
+if [ $MONTH -ne $MONTH1 ]
+then
+ln -sf ${gcm_dir}/${YEAR1}/FILE:${YEAR1}-${MONTH1}-* .
+fi
+
+rm TAVGSFC
+
+./util/avg_tsfc.exe
+./metgrid.exe
+
+for dfile in met_em.d0*
+do
+export FDATEZ=$dfile
+ncl mask_lakes_seaice.ncl
+done
+
+rm FILE:*
+echo "end WPS procs: `date`"
+
+cd $wrf_dir
+
+if [[ `date -ud "00:00:00 $MONTH/$DAY/$YEAR" +%s` -eq `date -ud "00:00:00 07/01/2063" +%s` ]]
+then
+WRFREST=".false."
+else
+WRFREST=".true."
+fi
+
+sed -e "s/YEAR1/$YEAR/g" -e "s/MONTH1/$MONTH/g" -e "s/DAY1/$DAY/g" \
+    -e "s/YEAR2/$YEAR1/g" -e "s/MONTH2/$MONTH1/g" -e "s/DAY2/$DAY1/g" \
+    -e "s/REZART/$WRFREST/g" \
+    ./namelist.input.dscale > namelist.input
+
+ln -sf $wps_dir/met_em.d0* .
+
+mpiexec ./real.exe
+echo "wrf.exe started: `date`"
+mpiexec ./wrf.exe
+echo "wrf.exe ended: `date`"
+if [[ `grep SUCCESS rsl.* | wc -l` -gt 0 ]]
+then
+  echo "WRF Completed"
+  rm rsl.*
+else
+  echo "WRF, Real or WPS failed"
+  exit 1
+fi
+
+rm met_em.d0*
+rm ${wps_dir}/met_em.d0*
+rm *_d01
+rm *_d02
+rm *_d03
+
+mv wrfout* $out_dir
+
+if [[ eflag -eq 0 ]]
+then
+  NNAME=${YEAR1}-${MONTH1}-${DAY1}
+  sed -e "s/^start_day=.*/start_day=$DAY1/" -e "s/^start_month=.*/start_month=$MONTH1/" -e "s/^start_year=.*/start_year=$YEAR1/" \
+      miroc6_wrf-${s_year}-${s_month}-${s_day}.sh > miroc6_wrf-${YEAR1}-${MONTH1}-${DAY1}.sh
+#  chmod +x miroc6_wrf-${YEAR1}-${MONTH1}-${DAY1}.sh
+  qsub miroc6_wrf-${YEAR1}-${MONTH1}-${DAY1}.sh
+fi
+
+
+
+exit
+

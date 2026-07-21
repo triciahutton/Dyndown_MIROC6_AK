@@ -29,7 +29,7 @@ VARS = ['RAINNC', 'RAINC', 'ACSNOW', 'slp',
         'wspd_wdir10', 'uvmet10', 'ctt',
         'rh2', 'T2', 'Q2', 'PSFC',
         'SNOW', 'SNOWH', 'SNOWC',
-        'twb', 'ALBEDO', 'SMOIS', 'SH2O',
+        'ALBEDO', 'SMOIS', 'SH2O',
         'TSK', 'TSLB', 'SEAICE',
         'HFX', 'LH',
         'SWDNB', 'SWDNBC', 'SWUPB', 'SWUPBC',
@@ -182,7 +182,7 @@ def process_and_save_files(testset, startdate, ii, args, COMPRESSIONLEVEL, SUBSE
             merged.attrs['date'] = dt.datetime.now().isoformat()
             merged.attrs['data'] = 'Downscaled CMIP6 using WRF'
             merged.attrs['info'] = 'Alaska Climate Adaptation Science Center, University of Alaska Fairbanks'
-            merged.attrs['contact'] = 'phutton5@alaska.edu'
+            merged.attrs['contact'] = 'phutton5@alaska.edu or uaf-snap-data-tools@alaska.edu'
             merged.attrs['version'] = 'WRF V4.6.1'
             merged.interp_level.attrs['units'] = "hPa"
             for var in merged.data_vars:
